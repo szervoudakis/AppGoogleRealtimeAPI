@@ -1,0 +1,3 @@
+client ID gia tin die8unsh localhost:8000 920212143191-ib56a2jdl9dc5m77gfgs5adkh9hadh9u.apps.googleusercontent.com
+
+client ID gia tin dieu8unsh 83.212.102.5:8000 -- 981919221875-j786il9o9ob4pbk04o9mouvg2s8ju2qe.apps.googleusercontent.com

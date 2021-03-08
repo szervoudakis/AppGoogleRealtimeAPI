@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Realtime API</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0/>
+              <meta name="theme-color" content="#2196F3"/>
+              <!-- Load Styles -->
+          <link href="https://www.gstatic.com/realtime/quickstart-styles.css" rel="stylesheet" type="text/css"/>
+        <!-- Load the Realtime JavaScript library -->
+        <script src="https://apis.google.com/js/api.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+        <!-- Load the utility library -->
+        <script src="https://www.gstatic.com/realtime/realtime-client-utils.js"></script>
+        <!-- CSS  -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link href="min/plugin-min.css" type="text/css" rel="stylesheet">
+        <link href="min/custom-min.css" type="text/css" rel="stylesheet" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+         <script src="js/myJsFun.js"></script> 
+        
+    </head>
+    <body>
+    
+  <style>
+body{
+background-color: line;
+}
+#floatingTest {
+  position: absolute;
+  right: 20%;
+  center:10%;
+}
+#floatingTest1 {
+  position: absolute;
+  right: 10%;
+  center:10%;
+}
+
+</style>
+
+      </div>
+     
+<div class="header">
+
+  <div class="teal">
+    <nav>
+     <div class="nav-wrapper grey darken-4 z-depth-0">
+       <a href="#!" id="acc_box" class="blue-text text-lighten 2"><i id="cloudState" class="material-icons left red-text text-lighten 2">account_box</i><span id="NameOfColl"></span></a>
+       <ul class="right hide-on-med-and-down">
+        <li><a href="javascript:OpenMessForColls(doc);" class="blue-text text-lighten 2"><i class="material-icons left blue-text text-lighten 2">chat</i> <span id="NumOfMess"> 0</span></a></li>
+        <li><a href="javascript:UpdateNumsOfColls(doc);" class="blue-text text-lighten 2"><i class="material-icons left blue-text text-lighten 2">group</i><span id="Num"> 0</span></a></li>
+        <li><a id="ChangeCollor" href="javascript:UpdateColls();" class="blue-text text-lighten 2" ><i  class="material-icons left ">notifications</i><span id="NumNot"> 0</span></a></li>
+      </ul>
+     
+    </div>
+  </nav>
+ </div>
+ 
+</div>
+    <!--Render list of cards-->
+    
+       <div class="container">
+
+        <div class="row">
+        <div class="col s8">
+         <select id="idName" onchange="update()">
+            <option selected="true" disabled="disabled" value="">Select board</option>
+         </select>
+            <p id="urlOfBoard"></p>
+        </div>
+        <div class="col s4">
+        <a id="members" class="btn-floating tooltipped btn-small waves-effect waves-light white  z-depth-0 " data-position="top" data-delay="50" data-tooltip="Δεν έχετε επιλέξει board" style="top: 15px; left: 24px;"><i class="material-icons black-text">supervisor_account</i></a>
+        
+        <a id="openBoard" class="btn-floating btn-small waves-effect waves-light white  z-depth-0 " style="top: 15px; left: 24px;" onclick="openBoardInTrello()"><i class="material-icons black-text">open_in_new</i></a>
+         <a onclick="OpenModalForCreateList()" id="addlist1" class="btn-floating tooltipped btn-small waves-effect waves-light white  z-depth-0 " data-position="top" data-delay="50" data-tooltip="Δεν έχετε επιλέξει board" style="top: 15px; left: 24px;"><i class="material-icons black-text">edit</i></a>
+        </div>
+        </div>
+       </div>    
+    
+   <div class="list-render-area container"> 
+      
+    </div> 
+   
+       <button id="auth_button">Authorize for RealTime API</button>
+       <!-- Modal Structure -->        
+<div id="modalCreateBoard" class="modal">
+    <div class="modal-content">
+      <h5>Create Board</h5>
+      <div class="row">
+         <div class="input-field col s2">
+           <input id="name_of_board" type="text" class="validate">
+           <label for="name_of_board">Name Of Board</label>
+         </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" onclick="createBoard()" class="waves-effect waves-green btn-flat">Create</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+  </div>
+
+ <div id="modalOnlineCalls" class="modal">
+    <div class="modal-content">
+      <h6><i class="material-icons">group</i>Collaborators</h6>
+      <div class="row">
+       <p id="online"></p> 
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal Structure -->
+  <div id="modal22" class="modal bottom-sheet">
+    <div class="modal-content">
+      <h4><i class="material-icons">notifications</i>Notification</h4>
+      <p id="notifCollsMessage"></p>
+       <div class="modal-footer">
+      <a href="#!" class="modal-action modal-close  waves-green btn-flat">OK</a>
+      <a href="javascript:clearNotBox();" class="modal-action modal-close  waves-green btn-flat">Clear</a>
+    </div>
+    </div>
+  </div>
+
+   <div id="modal3" class="modal">
+    <div class="modal-content">
+    <h6 >Sent a message to collaborator</h6>
+    <div class="row">
+     <form class="col s12">
+         <div class="row">
+        <div class="input-field col s8 m6 l3">
+         <select id="selectColl"></select>
+        </div>
+        </div>
+        <div class="row">
+        <div class="input-field col s8 m6 l3">
+          <textarea id="textIDColl" class="materialize-textarea" placeholder="Type a message here..."></textarea>
+        </div>
+      </div>  
+    </form>
+  
+  </div>
+    </div>
+    <div class="modal-footer">
+      <a  onclick="sendMessage()" class="modal-action btn-flat">Send</a>
+      <a  onclick="" class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+  </div>
+ 
+ 
+  <!-- Modal Structure -->
+  <div id="createModalCard" class="modal">
+    <div class="modal-content">
+      <h5 id="ListHeader"></h5>
+      <div class="row">
+        <div class="input-field col s4">
+         
+          <input id="icon_prefix" type="text" class="validate">
+          <label for="icon_prefix">Card Name</label>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <a id="buttonCreate" class="modal-action modal-close btn-flat">Add card</a>
+      <a  class="modal-action modal-close btn-flat">Cancel</a>
+    </div>
+  </div>
+  </div>
+       
+         
+   <!-- Modal Structure -->
+  <div id="modal4" class="modal fixed-footer">
+    <div class="modal-content ">
+      <h6 id="">Message from collaborators</h6>
+      <p id="MessageText"></p>   
+    </div>
+    <div class="modal-footer">
+    </div>
+ </div>
+  
+    <div id="createCard" class="modal fixed-footer">
+    <div class="modal-content">
+      <h5>Create Card</h5>     
+   <div class="row">
+      <form class="col s12 ">
+      <div class="row">
+        <div class="input-field col s6 ">
+          <select id="idNameUp" class="black-text" onchange="loadListInOpt()" >
+              <option  value="1">Select board</option>
+          </select>
+        </div>
+        
+      </div>
+      <div class="row">
+        <div class="input-field col s6 ">
+          <select id="myoptOfList" class="black-text">
+           <option value="v" >Select List</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6 ">
+          <select id="posCard" class="black-text">
+            <option value="pCard" >Position of Card</option>
+            <option value="top">top</option>
+            <option value="bottom">bottom</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6 ">
+          <div class="black-text">
+           <input id="name_list_card" type="text" class="validate">
+           <label for="name_list_card" class="black-text ">Name of card</label>
+         </div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+     <a href="javascript:createCard();" class="modal-action waves-blue btn-flat ">Add card</a>
+        <a href="#!" class="modal-action modal-close waves-blue btn-flat ">Cancel</a>  
+    </div>
+  </div>
+
+  </div>
+    </div>
+    <!-- Modal For Create List -->
+  <div id="createList" class="modal">
+   <div class="modal-content">
+   <div class="row">
+    <h5>Create new list</h5>
+      <form class="col s12">
+            <div class="input-field col s4">
+             <input id="list_name" type="text" class="validate">
+             <label for="list_name">List title</label>
+           </div>
+    </form>
+  </div>
+    </div>
+    <div class="modal-footer">
+      <a  class="modal-action modal-close waves-effect  btn-flat" onclick="createListInBoard()">Add List</a>
+      <a href="#!" class="modal-action modal-close waves-effect  btn-flat">Cancel</a>
+    </div>
+  </div>
+   
+    <!--FLOATING BUTTON-->
+  <div class="fixed-action-btn">
+     <a class="btn-floating btn-large black">
+      <i class="large material-icons blue-text text-lighten-2">playlist_add</i>
+     </a>
+     <ul>
+     <li><a class="btn-floating  green darken-2 tooltipped"   data-position="left" data-delay="50" data-tooltip="Create Board" onclick="callModal()"><i class="material-icons">edit</i></a></li>
+       <li><a class="btn-floating  blue darken-2 tooltipped"   data-position="left" data-delay="50" data-tooltip="Create Card " onclick="showModalForCreate()"><i class="material-icons">queue</i></a></li>
+       <li><a href= "javascript:s.showSettingsDialog()" class="btn-floating  red tooltipped" data-position="left" data-delay="50" data-tooltip="add people" ><i class="material-icons">person_add</i></a></li>
+       <li><a class="btn-floating  yellow darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Send message"  onclick="callModal1(doc)"><i class="material-icons">send</i></a></li>
+    </ul>
+  </div>
+
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+        <script src="https://api.trello.com/1/client.js?key=cd812e3607a88d4fe7784beebb010575"></script>
+        <script>
+        Trello.authorize({
+        type: "popup",
+        name: "Trello & RealTime",
+        scope: {
+          read: true,
+          write: true
+        },
+        expiration: "never",
+        success: loadBoards,
+        error: function() {console.log("error!");
+        }
+      });
+        </script>
+        </body>
+        
+</html>
